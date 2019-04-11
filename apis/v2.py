@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask_restplus import Api
-from apis.servers import api as servers
-from apis.keypairs import api as keypairs
+from apis.namespaces.servers import api as servers
+from apis.namespaces.keypairs import api as keypairs
 
 blueprint = Blueprint('v2', __name__, url_prefix='/api/v2')
 

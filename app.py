@@ -1,6 +1,6 @@
 from flask import Flask
-from v1 import blueprint as v1
-from v2 import blueprint as v2
+from apis.v1 import blueprint as v1
+from apis.v2 import blueprint as v2
 
 app = Flask(__name__)
 
