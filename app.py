@@ -1,9 +1,17 @@
 from flask import Flask
-from apis.v1 import blueprint as v1
-from apis.v2 import blueprint as v2
+from models import db, init_app
+import apis
 
-app = Flask(__name__)
 
-app.register_blueprint(v1)
-app.register_blueprint(v2)
-app.run(host='0.0.0.0', debug=True)
+def create_app():
+    app = Flask(__name__)
+    with app.test_request_context():
+        app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///"
+        db.init_app(app)
+        db.create_all()
+        apis.init_app(app)
+    return app
+
+
+app = create_app()
+app.run(host="0.0.0.0", debug=True)

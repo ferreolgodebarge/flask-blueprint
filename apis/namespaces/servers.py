@@ -1,33 +1,64 @@
 from flask_restplus import Namespace, Resource, fields
+from core.servers import (
+    list_servers,
+    create_server,
+    get_server_by_id,
+    update_server,
+    delete_server,
+)
 
-api = Namespace('servers', description='Servers related operations')
 
-server = api.model('Server', {
-    'id': fields.String(required=True, description='The server identifier'),
-    'name': fields.String(required=True, description='The server name'),
-})
+api = Namespace("servers", description="Servers related operations", ordered=True)
 
-SERVERS = [
-    {'id': '1a2b-3c4d-5e6f-7g8h', 'name': 'default_server'},
-]
+server = api.model(
+    "Server",
+    {
+        "id": fields.String(required=True, description="The server identifier"),
+        "name": fields.String(required=True, description="The server name"),
+        "description": fields.String(
+            required=True, description="The server description"
+        ),
+    },
+)
 
-@api.route('/')
+server_request = api.model(
+    "Server request",
+    {
+        "name": fields.String(required=True, description="The server name"),
+        "description": fields.String(description="The server description"),
+    },
+)
+
+
+@api.route("/")
 class ServerList(Resource):
-    @api.doc('list_servers')
-    @api.marshal_list_with(server)
+    @api.doc("list_servers")
     def get(self):
-        '''List all servers'''
-        return SERVERS
+        """List all servers"""
+        return list_servers()
 
-@api.route('/<id>')
-@api.param('id', 'The server identifier')
-@api.response(404, 'Server not found')
+    @api.doc("create_server")
+    @api.expect(server_request)
+    def post(self):
+        """Crete a server with its name"""
+        return create_server(api.payload["name"], api.payload["description"])
+
+
+@api.route("/<id>")
+@api.param("id", "The server identifier")
 class Server(Resource):
-    @api.doc('get_server')
-    @api.marshal_with(server)
+    @api.doc("get_server")
     def get(self, id):
-        '''Fetch a server given its identifier'''
-        for server in SERVERS:
-            if server['id'] == id:
-                return server
-        api.abort(404)
+        """Fetch a server given its identifier"""
+        return get_server_by_id(id)
+
+    @api.doc("update_server")
+    @api.expect(server_request)
+    def put(self, id):
+        """Update a server given its identifier"""
+        return update_server(id, api.payload["name"], api.payload["description"])
+
+    @api.doc("delete_server")
+    def delete(seld, id):
+        """Delete a server given its identifier"""
+        return delete_server(id)
