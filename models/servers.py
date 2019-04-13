@@ -8,4 +8,4 @@ class Servers(db.Model):
     description = db.Column(db.String(250), nullable=True)
 
     def __repr__(self):
-        return "<uuid : {}, name : {}>".format(self.id, self.name)
+        return "<uuid : {}, name : {}, description: {}>".format(self.id, self.name, self.description)
