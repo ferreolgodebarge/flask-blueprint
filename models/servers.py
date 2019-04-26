@@ -9,3 +9,6 @@ class Servers(db.Model):
 
     def __repr__(self):
         return "<uuid : {}, name : {}, description: {}>".format(self.id, self.name, self.description)
+
+    def to_dict(self):
+        return {"id": self.id, "name": self.name, "description": self.description}

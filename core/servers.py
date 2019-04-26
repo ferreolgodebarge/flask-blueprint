@@ -4,7 +4,11 @@ from core.id import generate
 
 
 def list_servers():
-    return Servers.query.all()
+    servers = Servers.query.all()
+    response_object = []
+    for server in servers:
+        response_object.append(server.to_dict())
+    return response_object, 200
 
 
 def get_server_by_id(id):
