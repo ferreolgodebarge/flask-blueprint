@@ -20,9 +20,8 @@ def get_server_by_id(id):
             "description": server.description,
         }
         return response_object, 200
-    else:
-        response_object = {"status": "fail", "message": "No server found for this id"}
-        return response_object, 404
+    response_object = {"status": "fail", "message": "No server found for this id"}
+    return response_object, 404
 
 
 def create_server(name, description):
