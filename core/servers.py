@@ -8,7 +8,7 @@ def list_servers():
     response_object = []
     for server in servers:
         response_object.append(server.to_dict())
-    return response_object, 200
+    return response_object
 
 
 def get_server_by_id(id):
@@ -19,9 +19,7 @@ def get_server_by_id(id):
             "name": server.name,
             "description": server.description,
         }
-        return response_object, 200
-    response_object = {"status": "fail", "message": "No server found for this id"}
-    return response_object, 404
+        return response_object
 
 
 def create_server(name, description):
@@ -31,13 +29,7 @@ def create_server(name, description):
         new_server = Servers(id=uuid, name=name, description=description)
         register_entry(new_server)
         response_object = {"id": uuid, "name": name, "description": description}
-        return response_object, 201
-    else:
-        response_object = {
-            "status": "fail",
-            "message": "Server already exists with this name.",
-        }
-        return response_object, 409
+        return response_object
 
 
 def update_server(id, name, description):
@@ -51,10 +43,7 @@ def update_server(id, name, description):
             "name": server.name,
             "description": server.description,
         }
-        return response_object, 200
-    else:
-        response_object = {"status": "fail", "message": "Server does not exist."}
-        return response_object, 409
+        return response_object
 
 
 def delete_server(id):
@@ -63,9 +52,6 @@ def delete_server(id):
         Servers.query.filter_by(id=id).delete()
         db.session.commit()
         return 204
-    else:
-        response_object = {"status": "fail", "message": "Server does not exist."}
-        return response_object, 409
 
 
 def register_entry(server):
