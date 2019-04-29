@@ -41,7 +41,8 @@ server_error = api.model(
 @api.route("/")
 class ServerList(Resource):
     @api.doc("list_servers")
-    @api.marshal_list_with(server, code=200, description='Success')
+    #@api.marshal_list_with(server, code=200, description='Success')
+    @api.response(code=200, description='Success', model=[server])
     def get(self):
         """List all servers"""
         return list_servers(), 200
